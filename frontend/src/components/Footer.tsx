@@ -1,26 +1,27 @@
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Footer() {
   const aboutLinks = [
-    { label: "Về chúng tôi", href: "#" },
-    { label: "Xưởng sản xuất", href: "#" },
-    { label: "Quy trình làm việc", href: "#" },
-    { label: "Tuyển dụng", href: "#" },
+    { label: "Về chúng tôi", href: "/" },
+    { label: "Xưởng sản xuất", href: "/" },
+    { label: "Quy trình làm việc", href: "/" },
+    { label: "Tuyển dụng", href: "/" },
   ];
 
   const categoryLinks = [
-    { label: "Sofa", href: "#" },
-    { label: "Bàn ghế", href: "#" },
-    { label: "Tủ - Kệ", href: "#" },
-    { label: "Phòng ngủ", href: "#" },
-    { label: "Đồ trang trí", href: "#" },
+    { label: "Sofa", to: "/products?category=sofa" },
+    { label: "Bàn ghế", to: "/products?category=ban-ghe" },
+    { label: "Tủ - Kệ", to: "/products?category=tu-ke" },
+    { label: "Phòng ngủ", to: "/products?category=phong-ngu" },
+    { label: "Đồ trang trí", to: "/products?category=do-trang-tri" },
   ];
 
   const projectLinks = [
-    { label: "Căn hộ", href: "#" },
-    { label: "Nhà phố", href: "#" },
-    { label: "Văn phòng", href: "#" },
-    { label: "Khách sạn", href: "#" },
+    { label: "Căn hộ", href: "/" },
+    { label: "Nhà phố", href: "/" },
+    { label: "Văn phòng", href: "/" },
+    { label: "Khách sạn", href: "/" },
   ];
 
   return (
@@ -70,12 +71,12 @@ export function Footer() {
             <ul className="space-y-3">
               {categoryLinks.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.to}
                     className="text-gray-400 hover:text-amber-500 transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

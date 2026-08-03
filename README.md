@@ -5,8 +5,9 @@ Nền tảng thương mại điện tử đồ nội thất cao cấp được x
 ## ✨ Tính năng
 
 - Trang chủ với Hero section và các section chính
-- Danh mục sản phẩm (Sofa, Bàn ghế, Giường, Tủ kệ, v.v.)
-- Gallery dự án và testimonials
+- Catalog sản phẩm `/products` với lọc theo danh mục
+- Trang chi tiết sản phẩm `/products/:slug`
+- Form yêu cầu báo giá (API)
 - Responsive design cho mọi thiết bị
 - UI components tái sử dụng (shadcn/ui pattern)
 

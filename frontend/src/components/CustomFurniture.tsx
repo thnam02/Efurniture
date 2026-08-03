@@ -47,7 +47,7 @@ export function CustomFurniture() {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-br from-amber-50 to-orange-50">
+    <section id="bao-gia" className="py-20 bg-gradient-to-br from-amber-50 to-orange-50 scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="mb-4">Nhận Thiết Kế – Đóng Nội Thất Theo Yêu Cầu</h2>
