@@ -42,6 +42,11 @@ export async function getProducts(params?: { popular?: boolean; category?: strin
   return result.data;
 }
 
+export async function getProduct(idOrSlug: string) {
+  const result = await request<{ data: Product }>(`/products/${idOrSlug}`);
+  return result.data;
+}
+
 export async function getCategories() {
   const result = await request<{ data: Category[] }>("/categories");
   return result.data;
