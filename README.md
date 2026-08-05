@@ -51,8 +51,17 @@ npm run dev
 | GET | `/api/products/:idOrSlug` | Chi tiết sản phẩm |
 | GET | `/api/categories` | Danh mục |
 | POST | `/api/quotes` | Yêu cầu báo giá (multipart, field `file` tùy chọn) |
-| GET | `/api/quotes` | Danh sách báo giá (dev) |
+| GET | `/api/quotes` | Danh sách báo giá (**admin**, header `x-admin-token`) |
+| GET | `/api/quotes/:id` | Chi tiết báo giá (**admin**) |
+| PATCH | `/api/quotes/:id` | Cập nhật status (**admin**) |
 | POST | `/api/contacts` | Form liên hệ |
+
+### Admin báo giá
+
+1. Mở `http://localhost:3000/admin`
+2. Nhập token từ `backend/.env` → `ADMIN_TOKEN` (mặc định dev: `dev-admin-token`)
+3. Quản lý tại `/admin/quotes` — lọc trạng thái, xem chi tiết, cập nhật `new` → `contacted` → `quoted` → `closed`
+
 
 ## 📁 Cấu trúc
 
