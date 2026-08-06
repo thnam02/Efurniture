@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { AdminShell } from "../../components/admin/AdminShell";
 import {
   QUOTE_STATUSES,
   clearAdminToken,
@@ -103,226 +104,196 @@ export function AdminQuotesPage() {
     }
   }
 
-  function logout() {
-    clearAdminToken();
-    navigate("/admin", { replace: true });
-  }
-
   return (
-    <div className="min-h-screen bg-stone-100">
-      <header className="bg-white border-b border-stone-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-stone-500">Admin</p>
-            <h1 className="text-lg text-stone-900">Yêu cầu báo giá</h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link to="/" className="text-sm text-stone-600 hover:text-amber-700">
-              Về trang chủ
-            </Link>
-            <button
-              type="button"
-              onClick={logout}
-              className="text-sm px-4 py-2 rounded-full bg-stone-900 text-white hover:bg-stone-800"
-            >
-              Đăng xuất
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-wrap gap-2 mb-6">
+    <AdminShell title="Yêu cầu báo giá">
+      <div className="flex flex-wrap gap-2 mb-6">
+        <button
+          type="button"
+          onClick={() => setFilter("all")}
+          className={`px-4 py-2 rounded-full text-sm ${
+            filter === "all"
+              ? "bg-amber-700 text-white"
+              : "bg-white text-stone-700 border border-stone-200"
+          }`}
+        >
+          Tất cả
+        </button>
+        {QUOTE_STATUSES.map((status) => (
           <button
+            key={status.value}
             type="button"
-            onClick={() => setFilter("all")}
+            onClick={() => setFilter(status.value)}
             className={`px-4 py-2 rounded-full text-sm ${
-              filter === "all"
+              filter === status.value
                 ? "bg-amber-700 text-white"
                 : "bg-white text-stone-700 border border-stone-200"
             }`}
           >
-            Tất cả
+            {status.label}
           </button>
-          {QUOTE_STATUSES.map((status) => (
-            <button
-              key={status.value}
-              type="button"
-              onClick={() => setFilter(status.value)}
-              className={`px-4 py-2 rounded-full text-sm ${
-                filter === status.value
-                  ? "bg-amber-700 text-white"
-                  : "bg-white text-stone-700 border border-stone-200"
-              }`}
-            >
-              {status.label}
-            </button>
-          ))}
-        </div>
+        ))}
+      </div>
 
-        {error && (
-          <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-3">
-            {error}
-          </p>
-        )}
+      {error && (
+        <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-3">
+          {error}
+        </p>
+      )}
 
-        {loading && <p className="text-stone-500">Đang tải...</p>}
+      {loading && <p className="text-stone-500">Đang tải...</p>}
 
-        {!loading && quotes.length === 0 && (
-          <p className="text-stone-500">Chưa có yêu cầu báo giá nào.</p>
-        )}
+      {!loading && quotes.length === 0 && (
+        <p className="text-stone-500">Chưa có yêu cầu báo giá nào.</p>
+      )}
 
-        {!loading && quotes.length > 0 && (
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
-            <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-stone-50 text-left text-stone-500">
-                    <tr>
-                      <th className="px-4 py-3 font-medium">Khách hàng</th>
-                      <th className="px-4 py-3 font-medium">SĐT</th>
-                      <th className="px-4 py-3 font-medium">Trạng thái</th>
-                      <th className="px-4 py-3 font-medium">Ngày</th>
+      {!loading && quotes.length > 0 && (
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
+          <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-stone-50 text-left text-stone-500">
+                  <tr>
+                    <th className="px-4 py-3 font-medium">Khách hàng</th>
+                    <th className="px-4 py-3 font-medium">SĐT</th>
+                    <th className="px-4 py-3 font-medium">Trạng thái</th>
+                    <th className="px-4 py-3 font-medium">Ngày</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {quotes.map((quote) => (
+                    <tr
+                      key={quote.id}
+                      onClick={() => setSelectedId(quote.id)}
+                      className={`border-t border-stone-100 cursor-pointer hover:bg-amber-50/50 ${
+                        selectedId === quote.id ? "bg-amber-50" : ""
+                      }`}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="text-stone-900">{quote.name}</div>
+                        <div className="text-stone-500 text-xs">
+                          {quote.email || "Không có email"}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-stone-700">{quote.phone}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-flex px-2.5 py-1 rounded-full text-xs ${statusClass(quote.status)}`}
+                        >
+                          {statusLabel(quote.status)}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-stone-600 whitespace-nowrap">
+                        {formatDate(quote.createdAt)}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {quotes.map((quote) => (
-                      <tr
-                        key={quote.id}
-                        onClick={() => setSelectedId(quote.id)}
-                        className={`border-t border-stone-100 cursor-pointer hover:bg-amber-50/50 ${
-                          selectedId === quote.id ? "bg-amber-50" : ""
-                        }`}
-                      >
-                        <td className="px-4 py-3">
-                          <div className="text-stone-900">{quote.name}</div>
-                          <div className="text-stone-500 text-xs">
-                            {quote.email || "Không có email"}
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-stone-700">{quote.phone}</td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`inline-flex px-2.5 py-1 rounded-full text-xs ${statusClass(quote.status)}`}
-                          >
-                            {statusLabel(quote.status)}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-stone-600 whitespace-nowrap">
-                          {formatDate(quote.createdAt)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            <aside className="bg-white border border-stone-200 rounded-2xl p-6 h-fit">
-              {selected ? (
-                <div className="space-y-4">
+          <aside className="bg-white border border-stone-200 rounded-2xl p-6 h-fit">
+            {selected ? (
+              <div className="space-y-4">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-stone-500 mb-1">
+                    Chi tiết
+                  </p>
+                  <h2 className="text-xl text-stone-900">{selected.name}</h2>
+                </div>
+
+                <dl className="space-y-3 text-sm">
                   <div>
-                    <p className="text-xs uppercase tracking-wide text-stone-500 mb-1">
-                      Chi tiết
-                    </p>
-                    <h2 className="text-xl text-stone-900">{selected.name}</h2>
+                    <dt className="text-stone-500">Số điện thoại</dt>
+                    <dd>
+                      <a
+                        href={`tel:${selected.phone}`}
+                        className="text-amber-700 hover:underline"
+                      >
+                        {selected.phone}
+                      </a>
+                    </dd>
                   </div>
-
-                  <dl className="space-y-3 text-sm">
-                    <div>
-                      <dt className="text-stone-500">Số điện thoại</dt>
-                      <dd>
+                  <div>
+                    <dt className="text-stone-500">Email</dt>
+                    <dd>
+                      {selected.email ? (
                         <a
-                          href={`tel:${selected.phone}`}
+                          href={`mailto:${selected.email}`}
                           className="text-amber-700 hover:underline"
                         >
-                          {selected.phone}
+                          {selected.email}
                         </a>
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-stone-500">Email</dt>
-                      <dd>
-                        {selected.email ? (
-                          <a
-                            href={`mailto:${selected.email}`}
-                            className="text-amber-700 hover:underline"
-                          >
-                            {selected.email}
-                          </a>
-                        ) : (
-                          <span className="text-stone-400">—</span>
-                        )}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-stone-500">Kích thước</dt>
-                      <dd className="text-stone-800">
-                        {selected.dimensions || "—"}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-stone-500">Mô tả</dt>
-                      <dd className="text-stone-800 whitespace-pre-wrap">
-                        {selected.description}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-stone-500">File đính kèm</dt>
-                      <dd>
-                        {selected.filePath ? (
-                          <a
-                            href={uploadUrl(selected.filePath) ?? "#"}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-amber-700 hover:underline"
-                          >
-                            Xem file
-                          </a>
-                        ) : (
-                          <span className="text-stone-400">Không có</span>
-                        )}
-                      </dd>
-                    </div>
-                  </dl>
-
-                  <div>
-                    <label
-                      htmlFor="status"
-                      className="block text-sm text-stone-700 mb-2"
-                    >
-                      Cập nhật trạng thái
-                    </label>
-                    <select
-                      id="status"
-                      value={selected.status}
-                      disabled={updatingId === selected.id}
-                      onChange={(e) =>
-                        void handleStatusChange(
-                          selected.id,
-                          e.target.value as QuoteStatus,
-                        )
-                      }
-                      className="w-full rounded-lg border border-stone-300 px-3 py-2"
-                    >
-                      {QUOTE_STATUSES.map((status) => (
-                        <option key={status.value} value={status.value}>
-                          {status.label}
-                        </option>
-                      ))}
-                    </select>
-                    {updatingId === selected.id && (
-                      <p className="text-xs text-stone-500 mt-2">Đang cập nhật...</p>
-                    )}
+                      ) : (
+                        <span className="text-stone-400">—</span>
+                      )}
+                    </dd>
                   </div>
+                  <div>
+                    <dt className="text-stone-500">Kích thước</dt>
+                    <dd className="text-stone-800">{selected.dimensions || "—"}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500">Mô tả</dt>
+                    <dd className="text-stone-800 whitespace-pre-wrap">
+                      {selected.description}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500">File đính kèm</dt>
+                    <dd>
+                      {selected.filePath ? (
+                        <a
+                          href={uploadUrl(selected.filePath) ?? "#"}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-amber-700 hover:underline"
+                        >
+                          Xem file
+                        </a>
+                      ) : (
+                        <span className="text-stone-400">Không có</span>
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+
+                <div>
+                  <label
+                    htmlFor="status"
+                    className="block text-sm text-stone-700 mb-2"
+                  >
+                    Cập nhật trạng thái
+                  </label>
+                  <select
+                    id="status"
+                    value={selected.status}
+                    disabled={updatingId === selected.id}
+                    onChange={(e) =>
+                      void handleStatusChange(
+                        selected.id,
+                        e.target.value as QuoteStatus,
+                      )
+                    }
+                    className="w-full rounded-lg border border-stone-300 px-3 py-2"
+                  >
+                    {QUOTE_STATUSES.map((status) => (
+                      <option key={status.value} value={status.value}>
+                        {status.label}
+                      </option>
+                    ))}
+                  </select>
+                  {updatingId === selected.id && (
+                    <p className="text-xs text-stone-500 mt-2">Đang cập nhật...</p>
+                  )}
                 </div>
-              ) : (
-                <p className="text-stone-500">Chọn một yêu cầu để xem chi tiết.</p>
-              )}
-            </aside>
-          </div>
-        )}
-      </div>
-    </div>
+              </div>
+            ) : (
+              <p className="text-stone-500">Chọn một yêu cầu để xem chi tiết.</p>
+            )}
+          </aside>
+        </div>
+      )}
+    </AdminShell>
   );
 }
