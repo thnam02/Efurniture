@@ -18,6 +18,37 @@ export type QuoteRequest = {
   createdAt: string;
 };
 
+export type AdminCategory = {
+  id: string;
+  name: string;
+  slug: string;
+  imageUrl: string | null;
+};
+
+export type AdminProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  priceFrom: number;
+  imageUrl: string;
+  popular: boolean;
+  categoryId: string;
+  category: AdminCategory;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ProductInput = {
+  name: string;
+  slug?: string;
+  description?: string | null;
+  priceFrom: number;
+  imageUrl: string;
+  popular: boolean;
+  categoryId: string;
+};
+
 export const QUOTE_STATUSES: { value: QuoteStatus; label: string }[] = [
   { value: "new", label: "Mới" },
   { value: "contacted", label: "Đã liên hệ" },
@@ -91,4 +122,45 @@ export async function updateQuoteStatus(id: string, status: QuoteStatus) {
     },
   );
   return result.data;
+}
+
+export async function getAdminCategories() {
+  const result = await adminRequest<{ data: AdminCategory[] }>("/categories");
+  return result.data;
+}
+
+export async function getAdminProducts(params?: { category?: string }) {
+  const query = new URLSearchParams();
+  if (params?.category) query.set("category", params.category);
+  const suffix = query.toString() ? `?${query}` : "";
+  const result = await adminRequest<{ data: AdminProduct[] }>(`/products${suffix}`);
+  return result.data;
+}
+
+export async function createProduct(input: ProductInput) {
+  const result = await adminRequest<{ data: AdminProduct; message: string }>(
+    "/products",
+    {
+      method: "POST",
+      body: JSON.stringify(input),
+    },
+  );
+  return result.data;
+}
+
+export async function updateProduct(id: string, input: Partial<ProductInput>) {
+  const result = await adminRequest<{ data: AdminProduct; message: string }>(
+    `/products/${id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+  return result.data;
+}
+
+export async function deleteProduct(id: string) {
+  return adminRequest<{ message: string }>(`/products/${id}`, {
+    method: "DELETE",
+  });
 }
