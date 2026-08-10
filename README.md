@@ -1,4 +1,4 @@
-# 🪑 E-Furniture - High-End Furniture E-Commerce
+# E-Furniture - High-End Furniture E-Commerce
 
 Nền tảng thương mại điện tử đồ nội thất cao cấp được xây dựng với React, TypeScript và Tailwind CSS.
 
