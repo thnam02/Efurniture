@@ -2,7 +2,7 @@
 
 Nền tảng thương mại điện tử đồ nội thất cao cấp được xây dựng với React, TypeScript và Tailwind CSS.
 
-## ✨ Tính năng
+## Tính năng
 
 - Trang chủ với Hero section và các section chính
 - Catalog sản phẩm `/products` với lọc theo danh mục
@@ -11,7 +11,7 @@ Nền tảng thương mại điện tử đồ nội thất cao cấp được x
 - Responsive design cho mọi thiết bị
 - UI components tái sử dụng (shadcn/ui pattern)
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React** 18.3.1 + **TypeScript**
 - **Vite** 6.4.1
@@ -19,7 +19,7 @@ Nền tảng thương mại điện tử đồ nội thất cao cấp được x
 - **Radix UI** - UI components
 - **Lucide React** - Icons
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Backend (API + SQLite)
 
@@ -42,7 +42,7 @@ npm run dev
 
 Ứng dụng chạy tại `http://localhost:3000`
 
-## 🔌 API
+## API
 
 | Method | Path | Mô tả |
 |--------|------|-------|
@@ -67,7 +67,7 @@ npm run dev
 4. `/admin/products` — thêm / sửa / xóa sản phẩm
 
 
-## 📁 Cấu trúc
+## Cấu trúc
 
 ```
 backend/
