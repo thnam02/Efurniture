@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { getCategories, type Category } from "../lib/api";
+import { getCategories, mediaUrl, type Category } from "../lib/api";
 
 const fallbackCategories: Category[] = [
   {
@@ -85,7 +85,7 @@ export function FeaturedCategories() {
             >
               <ImageWithFallback
                 src={
-                  category.imageUrl ||
+                  mediaUrl(category.imageUrl) ||
                   "https://images.unsplash.com/photo-1578500396437-400b7d3d1831?w=1080"
                 }
                 alt={category.name}

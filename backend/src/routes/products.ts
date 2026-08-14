@@ -28,12 +28,20 @@ async function uniqueSlug(base: string, excludeId?: string) {
   }
 }
 
+const imageUrlSchema = z
+  .string()
+  .min(1)
+  .refine(
+    (value) => value.startsWith("/uploads/") || /^https?:\/\//i.test(value),
+    "Image must be an http(s) URL or an uploaded /uploads/ path",
+  );
+
 const productSchema = z.object({
   name: z.string().min(2),
   slug: z.string().min(2).optional().or(z.literal("")),
   description: z.string().optional().nullable(),
   priceFrom: z.coerce.number().int().positive(),
-  imageUrl: z.string().url(),
+  imageUrl: imageUrlSchema,
   popular: z.boolean().optional().default(false),
   categoryId: z.string().min(1),
 });
