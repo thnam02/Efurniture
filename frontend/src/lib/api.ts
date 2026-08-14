@@ -1,4 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+const MEDIA_BASE = import.meta.env.VITE_UPLOADS_URL ?? "http://localhost:4000";
 
 export type Category = {
   id: string;
@@ -31,6 +32,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export function formatPriceVnd(priceFrom: number) {
   return new Intl.NumberFormat("vi-VN").format(priceFrom);
+}
+
+export function mediaUrl(path: string | null | undefined) {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return `${MEDIA_BASE}${path}`;
 }
 
 export async function getProducts(params?: { popular?: boolean; category?: string }) {

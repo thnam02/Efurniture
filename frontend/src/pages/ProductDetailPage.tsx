@@ -7,6 +7,7 @@ import {
   formatPriceVnd,
   getProduct,
   getProducts,
+  mediaUrl,
   type Product,
 } from "../lib/api";
 
@@ -92,7 +93,7 @@ export function ProductDetailPage() {
         <div className="grid lg:grid-cols-2 gap-12 mb-20">
           <div className="aspect-square rounded-2xl overflow-hidden bg-gray-100 shadow-md">
             <ImageWithFallback
-              src={product.imageUrl}
+              src={mediaUrl(product.imageUrl)}
               alt={product.name}
               className="w-full h-full object-cover"
             />

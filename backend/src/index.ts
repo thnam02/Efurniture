@@ -6,6 +6,7 @@ import { productsRouter } from "./routes/products.js";
 import { categoriesRouter } from "./routes/categories.js";
 import { quotesRouter } from "./routes/quotes.js";
 import { contactsRouter } from "./routes/contacts.js";
+import { uploadsRouter } from "./routes/uploads.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 4000;
@@ -27,6 +28,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/quotes", quotesRouter);
 app.use("/api/contacts", contactsRouter);
+app.use("/api/uploads", uploadsRouter);
 
 app.listen(port, () => {
   console.log(`API running at http://localhost:${port}`);

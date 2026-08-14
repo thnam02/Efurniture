@@ -164,3 +164,25 @@ export async function deleteProduct(id: string) {
     method: "DELETE",
   });
 }
+
+export async function uploadProductImage(file: File) {
+  const token = getAdminToken();
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const headers = new Headers();
+  if (token) headers.set("x-admin-token", token);
+
+  const response = await fetch(`${API_BASE}/uploads`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+  const body = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(body.error || `Upload failed (${response.status})`);
+  }
+
+  return (body as { data: { url: string } }).data.url;
+}

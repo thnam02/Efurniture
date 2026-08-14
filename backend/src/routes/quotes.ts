@@ -1,32 +1,8 @@
 import { Router } from "express";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { requireAdmin } from "../middleware/adminAuth.js";
-
-const uploadsDir = path.resolve("uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const safe = file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_");
-    cb(null, `${Date.now()}-${safe}`);
-  },
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    const allowed = /\.(jpe?g|png|webp|pdf|gif)$/i.test(file.originalname);
-    cb(null, allowed);
-  },
-});
+import { uploadWithPdf } from "../lib/upload.js";
 
 const quoteSchema = z.object({
   name: z.string().min(2),
@@ -44,7 +20,7 @@ const statusSchema = z.object({
 
 export const quotesRouter = Router();
 
-quotesRouter.post("/", upload.single("file"), async (req, res) => {
+quotesRouter.post("/", uploadWithPdf.single("file"), async (req, res) => {
   try {
     const parsed = quoteSchema.safeParse(req.body);
     if (!parsed.success) {

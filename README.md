@@ -57,6 +57,7 @@ npm run dev
 | POST | `/api/products` | Tạo sản phẩm (**admin**) |
 | PATCH | `/api/products/:id` | Sửa sản phẩm (**admin**) |
 | DELETE | `/api/products/:id` | Xóa sản phẩm (**admin**) |
+| POST | `/api/uploads` | Upload ảnh sản phẩm (**admin**, multipart `file`) |
 | POST | `/api/contacts` | Form liên hệ |
 
 ### Admin

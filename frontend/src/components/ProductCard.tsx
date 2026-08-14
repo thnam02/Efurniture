@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { formatPriceVnd, type Product } from "../lib/api";
+import { formatPriceVnd, mediaUrl, type Product } from "../lib/api";
 
 type ProductCardProps = {
   product: Product;
@@ -13,7 +13,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link to={`/products/${product.slug}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-gray-100">
           <ImageWithFallback
-            src={product.imageUrl}
+            src={mediaUrl(product.imageUrl)}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />

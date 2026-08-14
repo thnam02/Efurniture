@@ -9,10 +9,12 @@ import {
   getAdminProducts,
   getAdminToken,
   updateProduct,
+  uploadProductImage,
   type AdminCategory,
   type AdminProduct,
   type ProductInput,
 } from "../../lib/adminApi";
+import { mediaUrl } from "../../lib/api";
 
 const emptyForm: ProductInput = {
   name: "",
@@ -39,6 +41,7 @@ export function AdminProductsPage() {
   const [mode, setMode] = useState<"create" | "edit">("create");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -112,6 +115,20 @@ export function AdminProductsPage() {
     });
     setMessage(null);
     setError(null);
+  }
+
+  async function handleImageFile(file: File | undefined) {
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const url = await uploadProductImage(file);
+      setForm((f) => ({ ...f, imageUrl: url }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload ảnh thất bại");
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -247,7 +264,7 @@ export function AdminProductsPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <img
-                              src={product.imageUrl}
+                              src={mediaUrl(product.imageUrl)}
                               alt=""
                               className="w-12 h-12 rounded-lg object-cover bg-stone-100"
                             />
@@ -372,22 +389,37 @@ export function AdminProductsPage() {
               </div>
 
               <div>
-                <label
-                  className="block text-sm text-stone-700 mb-1"
-                  htmlFor="imageUrl"
-                >
-                  URL ảnh *
+                <label className="block text-sm text-stone-700 mb-1" htmlFor="imageFile">
+                  Ảnh sản phẩm *
                 </label>
+                {form.imageUrl && (
+                  <img
+                    src={mediaUrl(form.imageUrl)}
+                    alt="Preview"
+                    className="w-full h-40 object-cover rounded-lg bg-stone-100 mb-3"
+                  />
+                )}
+                <input
+                  id="imageFile"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  disabled={uploading || saving}
+                  onChange={(e) => void handleImageFile(e.target.files?.[0])}
+                  className="w-full text-sm"
+                />
+                <p className="text-xs text-stone-500 mt-2 mb-2">
+                  {uploading ? "Đang tải ảnh..." : "Chọn file ảnh, hoặc dán URL bên dưới."}
+                </p>
                 <input
                   id="imageUrl"
-                  type="url"
+                  type="text"
                   required
                   value={form.imageUrl}
                   onChange={(e) =>
                     setForm((f) => ({ ...f, imageUrl: e.target.value }))
                   }
                   className="w-full rounded-lg border border-stone-300 px-3 py-2"
-                  placeholder="https://..."
+                  placeholder="https://... hoặc /uploads/..."
                 />
               </div>
 
@@ -423,7 +455,7 @@ export function AdminProductsPage() {
               <div className="flex flex-wrap gap-2 pt-2">
                 <button
                   type="submit"
-                  disabled={saving}
+                  disabled={saving || uploading}
                   className="px-5 py-2.5 rounded-full bg-amber-700 text-white hover:bg-amber-800 disabled:opacity-60"
                 >
                   {saving
