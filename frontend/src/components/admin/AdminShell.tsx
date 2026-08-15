@@ -36,6 +36,12 @@ export function AdminShell({ title, children }: AdminShellProps) {
             >
               Sản phẩm
             </Link>
+            <Link
+              to="/admin/categories"
+              className="text-sm px-3 py-1.5 rounded-full text-stone-700 hover:bg-stone-100"
+            >
+              Danh mục
+            </Link>
             <Link to="/" className="text-sm text-stone-600 hover:text-amber-700 hidden sm:inline">
               Trang chủ
             </Link>
