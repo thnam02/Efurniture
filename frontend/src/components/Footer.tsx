@@ -1,5 +1,7 @@
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getCategories, type Category } from "../lib/api";
 
 export function Footer() {
   const aboutLinks = [
@@ -9,13 +11,37 @@ export function Footer() {
     { label: "Tuyển dụng", href: "/" },
   ];
 
-  const categoryLinks = [
+  const fallbackCategoryLinks = [
     { label: "Sofa", to: "/products?category=sofa" },
     { label: "Bàn ghế", to: "/products?category=ban-ghe" },
     { label: "Tủ - Kệ", to: "/products?category=tu-ke" },
     { label: "Phòng ngủ", to: "/products?category=phong-ngu" },
     { label: "Đồ trang trí", to: "/products?category=do-trang-tri" },
   ];
+
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getCategories()
+      .then((data) => {
+        if (!cancelled) setCategories(data);
+      })
+      .catch(() => {
+        /* keep fallback */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const categoryLinks =
+    categories.length > 0
+      ? categories.map((category) => ({
+          label: category.name,
+          to: `/products?category=${category.slug}`,
+        }))
+      : fallbackCategoryLinks;
 
   const projectLinks = [
     { label: "Căn hộ", href: "/" },

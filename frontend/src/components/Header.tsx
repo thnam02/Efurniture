@@ -1,6 +1,7 @@
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getCategories, type Category } from "../lib/api";
 
 interface DropdownItem {
   label: string;
@@ -16,34 +17,49 @@ interface MenuItem {
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getCategories()
+      .then((data) => {
+        if (!cancelled) setCategories(data);
+      })
+      .catch(() => {
+        /* keep empty; fallback menu still works */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const categoryDropdown: DropdownItem[] = [
+    { label: "Tất cả sản phẩm", to: "/products" },
+    ...(categories.length > 0
+      ? categories.map((category) => ({
+          label: category.name,
+          to: `/products?category=${category.slug}`,
+        }))
+      : [
+          { label: "Sofa", to: "/products?category=sofa" },
+          { label: "Bàn ghế", to: "/products?category=ban-ghe" },
+          { label: "Tủ – Kệ", to: "/products?category=tu-ke" },
+          { label: "Phòng ngủ", to: "/products?category=phong-ngu" },
+          { label: "Bàn làm việc", to: "/products?category=ban-lam-viec" },
+          { label: "Đồ trang trí", to: "/products?category=do-trang-tri" },
+        ]),
+  ];
 
   const menuItems: MenuItem[] = [
     { label: "Trang chủ", to: "/" },
     {
-      label: "Đồ nội thất",
+      label: "Sản phẩm",
       to: "/products",
-      dropdown: [
-        { label: "Tất cả sản phẩm", to: "/products" },
-        { label: "Sofa", to: "/products?category=sofa" },
-        { label: "Bàn ghế", to: "/products?category=ban-ghe" },
-        { label: "Tủ – Kệ", to: "/products?category=tu-ke" },
-        { label: "Phòng ngủ", to: "/products?category=phong-ngu" },
-        { label: "Bàn làm việc", to: "/products?category=ban-lam-viec" },
-      ],
-    },
-    {
-      label: "Đồ trang trí",
-      to: "/products?category=do-trang-tri",
-      dropdown: [
-        { label: "Tất cả trang trí", to: "/products?category=do-trang-tri" },
-      ],
+      dropdown: categoryDropdown,
     },
     {
       label: "Hàng mới",
       to: "/products?popular=true",
-      dropdown: [
-        { label: "Sản phẩm nổi bật", to: "/products?popular=true" },
-      ],
     },
     { label: "Liên lạc", to: "/#bao-gia" },
   ];

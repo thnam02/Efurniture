@@ -50,6 +50,9 @@ npm run dev
 | GET | `/api/products?popular=true` | Danh sách sản phẩm |
 | GET | `/api/products/:idOrSlug` | Chi tiết sản phẩm |
 | GET | `/api/categories` | Danh mục |
+| POST | `/api/categories` | Tạo danh mục (**admin**) |
+| PATCH | `/api/categories/:id` | Sửa danh mục (**admin**) |
+| DELETE | `/api/categories/:id` | Xóa danh mục (**admin**, chỉ khi không còn sản phẩm) |
 | POST | `/api/quotes` | Yêu cầu báo giá (multipart, field `file` tùy chọn) |
 | GET | `/api/quotes` | Danh sách báo giá (**admin**, header `x-admin-token`) |
 | GET | `/api/quotes/:id` | Chi tiết báo giá (**admin**) |
@@ -66,6 +69,7 @@ npm run dev
 2. Token: `ADMIN_TOKEN` trong `backend/.env` (dev: `dev-admin-token`)
 3. `/admin/quotes` — quản lý báo giá  
 4. `/admin/products` — thêm / sửa / xóa sản phẩm
+5. `/admin/categories` — thêm / sửa / xóa danh mục
 
 
 ## 📁 Cấu trúc

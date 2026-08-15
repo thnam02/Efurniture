@@ -23,6 +23,13 @@ export type AdminCategory = {
   name: string;
   slug: string;
   imageUrl: string | null;
+  _count?: { products: number };
+};
+
+export type CategoryInput = {
+  name: string;
+  slug?: string;
+  imageUrl?: string | null;
 };
 
 export type AdminProduct = {
@@ -127,6 +134,34 @@ export async function updateQuoteStatus(id: string, status: QuoteStatus) {
 export async function getAdminCategories() {
   const result = await adminRequest<{ data: AdminCategory[] }>("/categories");
   return result.data;
+}
+
+export async function createCategory(input: CategoryInput) {
+  const result = await adminRequest<{ data: AdminCategory; message: string }>(
+    "/categories",
+    {
+      method: "POST",
+      body: JSON.stringify(input),
+    },
+  );
+  return result.data;
+}
+
+export async function updateCategory(id: string, input: Partial<CategoryInput>) {
+  const result = await adminRequest<{ data: AdminCategory; message: string }>(
+    `/categories/${id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+  return result.data;
+}
+
+export async function deleteCategory(id: string) {
+  return adminRequest<{ message: string }>(`/categories/${id}`, {
+    method: "DELETE",
+  });
 }
 
 export async function getAdminProducts(params?: { category?: string }) {
