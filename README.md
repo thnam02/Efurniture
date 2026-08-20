@@ -1,8 +1,8 @@
-# 🪑 E-Furniture - High-End Furniture E-Commerce
+# E-Furniture - High-End Furniture E-Commerce
 
 Nền tảng thương mại điện tử đồ nội thất cao cấp được xây dựng với React, TypeScript và Tailwind CSS.
 
-## ✨ Tính năng
+## Tính năng
 
 - Trang chủ với Hero section và các section chính
 - Catalog sản phẩm `/products` với lọc theo danh mục
@@ -11,7 +11,7 @@ Nền tảng thương mại điện tử đồ nội thất cao cấp được x
 - Responsive design cho mọi thiết bị
 - UI components tái sử dụng (shadcn/ui pattern)
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React** 18.3.1 + **TypeScript** + **Vite**
 - **Express** + **Prisma** + **PostgreSQL**
@@ -72,7 +72,7 @@ Seed chỉ chạy khi DB trống. Reset catalog: `FORCE_SEED=true` khi chạy `n
 Production: đổi mật khẩu/token, set `FRONTEND_ORIGIN=https://your-domain`, trỏ DNS vào máy chạy Compose (port 80/8080).
 
 
-## 🔌 API
+## API
 
 | Method | Path | Mô tả |
 |--------|------|-------|
@@ -102,7 +102,7 @@ Production: đổi mật khẩu/token, set `FRONTEND_ORIGIN=https://your-domain`
 5. `/admin/categories` — thêm / sửa / xóa danh mục
 
 
-## 📁 Cấu trúc
+## Cấu trúc
 
 ```
 backend/
@@ -119,4 +119,3 @@ frontend/
 
 **Backend:** `npm run dev` · `npm run db:setup` · `npm run db:seed`  
 **Frontend:** `npm run dev` · `npm run build`
-
