@@ -1,6 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+const API_BASE = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? "http://localhost:4000/api" : "/api");
 const UPLOADS_BASE =
-  import.meta.env.VITE_UPLOADS_URL ?? "http://localhost:4000";
+  import.meta.env.VITE_UPLOADS_URL ?? (import.meta.env.DEV ? "http://localhost:4000" : "");
 
 const ADMIN_TOKEN_KEY = "efurniture_admin_token";
 

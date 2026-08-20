@@ -11,10 +11,14 @@ import { uploadsRouter } from "./routes/uploads.js";
 const app = express();
 const port = Number(process.env.PORT) || 4000;
 const frontendOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
+const corsOrigins = frontendOrigin
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
-    origin: frontendOrigin,
+    origin: corsOrigins.length === 1 ? corsOrigins[0] : corsOrigins,
   }),
 );
 app.use(express.json());
@@ -30,6 +34,6 @@ app.use("/api/quotes", quotesRouter);
 app.use("/api/contacts", contactsRouter);
 app.use("/api/uploads", uploadsRouter);
 
-app.listen(port, () => {
-  console.log(`API running at http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`API running at http://0.0.0.0:${port}`);
 });

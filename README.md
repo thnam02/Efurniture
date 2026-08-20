@@ -13,24 +13,31 @@ Nền tảng thương mại điện tử đồ nội thất cao cấp được x
 
 ## 🛠️ Tech Stack
 
-- **React** 18.3.1 + **TypeScript**
-- **Vite** 6.4.1
-- **Tailwind CSS** 4.1.3
-- **Radix UI** - UI components
-- **Lucide React** - Icons
+- **React** 18.3.1 + **TypeScript** + **Vite**
+- **Express** + **Prisma** + **PostgreSQL**
+- **Tailwind CSS** + **Radix UI**
 
-## 🚀 Quick Start
+## 🚀 Quick Start (local)
 
-### Backend (API + SQLite)
+Postgres phải chạy trước (Docker hoặc local):
+
+```bash
+cd Efurniture
+docker compose up db -d
+```
+
+### Backend
 
 ```bash
 cd backend
+cp .env.example .env   # lần đầu
 npm install
-npm run db:setup
+npx prisma generate
+npm run db:setup       # migrate + seed
 npm run dev
 ```
 
-API chạy tại `http://localhost:4000`
+API: `http://localhost:4000`
 
 ### Frontend
 
@@ -40,7 +47,30 @@ npm install
 npm run dev
 ```
 
-Ứng dụng chạy tại `http://localhost:3000`
+App: `http://localhost:3000`
+
+## 🚢 Deploy (Docker)
+
+Từ thư mục `Efurniture`:
+
+```bash
+cp .env.example .env
+# Sửa POSTGRES_PASSWORD, ADMIN_TOKEN, FRONTEND_ORIGIN (domain thật)
+
+docker compose up --build -d
+```
+
+Mở `http://localhost:8080` (hoặc `WEB_PORT`).
+
+- Admin: `/admin` — token = `ADMIN_TOKEN`
+- API/health qua cùng origin: `/api/health`
+- File upload lưu volume `uploads_data`
+- Postgres lưu volume `postgres_data`
+
+Seed chỉ chạy khi DB trống. Reset catalog: `FORCE_SEED=true` khi chạy `npm run db:seed`.
+
+Production: đổi mật khẩu/token, set `FRONTEND_ORIGIN=https://your-domain`, trỏ DNS vào máy chạy Compose (port 80/8080).
+
 
 ## 🔌 API
 

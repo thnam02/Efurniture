@@ -125,6 +125,12 @@ const products = [
 ];
 
 async function main() {
+  const existing = await prisma.category.count();
+  if (existing > 0 && process.env.FORCE_SEED !== "true") {
+    console.log("Skip seed: database already has categories");
+    return;
+  }
+
   await prisma.quoteRequest.deleteMany();
   await prisma.contactMessage.deleteMany();
   await prisma.product.deleteMany();
